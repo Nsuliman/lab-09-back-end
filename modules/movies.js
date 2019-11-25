@@ -1,11 +1,15 @@
 'use strict';
+
 const superagent = reqiure ('superagent');
+
 module.exports = getMovies ;
+
 function getMovies(location){
-const url =`https://api.themoviedb.org/3/movie/550?api_key=${process.env.MOVIE_API_KEY}`;
+const url =`https://api.themoviedb.org/3/movie/550?api_key=${process.env.MOVIE_API_KEY}/${location}`;
 return superagent.get(url)
 .then (data => parseMoviesData(data.body));
-}
+}; // End of getMovies function 
+
 function parseMoviesData(data) {
     try {
         const movies = data.results.map(movie =>{
@@ -15,7 +19,8 @@ function parseMoviesData(data) {
       }  catch(e){
           return Promise.reject(e) ;
     }
-}
+}; // End of parseMoviesData function 
+
 function Movie(movie){
     this.tableName='movies';
     this.title =movie.title ;
@@ -26,4 +31,4 @@ function Movie(movie){
     this.popularity = movie.popularity ;
     this.released_on = movie.release_data ;
     this.created_at = Date.now();
-}
+} // End of Movie constructor function
